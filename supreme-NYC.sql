@@ -1,9 +1,9 @@
 /**
 	Name: SupremeNYC Database 
-    Author: lanceavist
+    	Author: lawrld
 */
 
--- Create database
+
 CREATE DATABASE supremeNYC;
 USE supremeNYC;
 
@@ -16,19 +16,19 @@ DROP TABLE IF EXISTS sizes;
 DROP TABLE IF EXISTS colors;
 
 
--- Create the colors table
+
 CREATE TABLE colors (
     color_id INT PRIMARY KEY AUTO_INCREMENT,
     color_name VARCHAR(50) NOT NULL UNIQUE
 );
 
--- Create the sizes table
+
 CREATE TABLE sizes (
     size_id INT PRIMARY KEY AUTO_INCREMENT,
     size_name VARCHAR(20) NOT NULL UNIQUE
 );
 
--- Create the products table
+
 CREATE TABLE products (
     product_id INT PRIMARY KEY AUTO_INCREMENT,
     product_name VARCHAR(100) NOT NULL,
@@ -37,7 +37,7 @@ CREATE TABLE products (
     base_price DECIMAL(10, 2) NOT NULL
 );
 
--- Create the product_variants table
+
 CREATE TABLE product_variants (
     variant_id INT PRIMARY KEY AUTO_INCREMENT,
     product_id INT,
@@ -51,7 +51,7 @@ CREATE TABLE product_variants (
     FOREIGN KEY (size_id) REFERENCES sizes(size_id)
 );
 
--- Create the customers table
+
 CREATE TABLE customers (
     customer_id INT PRIMARY KEY AUTO_INCREMENT,
     first_name VARCHAR(50) NOT NULL,
@@ -63,7 +63,7 @@ CREATE TABLE customers (
     FOREIGN KEY (order_id) REFERENCES orders(order_id)
 );
 
--- Create the orders table
+
 CREATE TABLE orders (
     order_id INT PRIMARY KEY AUTO_INCREMENT,
     customer_id INT,
@@ -73,7 +73,7 @@ CREATE TABLE orders (
     FOREIGN KEY (customer_id) REFERENCES customers(customer_id)
 );
 
--- Create the order_items table
+
 CREATE TABLE order_items (
     order_item_id INT PRIMARY KEY AUTO_INCREMENT,
     order_id INT,
@@ -83,9 +83,7 @@ CREATE TABLE order_items (
     FOREIGN KEY (order_id) REFERENCES orders(order_id)
 );
 
--- Sample inserts to populate tables (for testing purposes)
 
--- Insert categories
 INSERT INTO products (product_name, description, category, base_price) VALUES
 ('Supreme/Jordan Puffer Jacket', 'Water resistant poly with filled quilted baffles and taffeta lining. Made exclusively for Supreme.', 'Jackets', 368.00),
 ('Polartec Shearling Reversible Pullover', 'Polartec 300 shearling fleece with half snap enclosure. Woven logo label at lower front.', 'Jackets', 199.00),
@@ -121,17 +119,17 @@ INSERT INTO products (product_name, description, category, base_price) VALUES
 ('Supreme/Spitfire Shop Wheels (Set of 4)', 'Classic Spitfire wheels with custom Supreme art. Made eclusively for Supreme.', 'Skate', 36.00),
 ('Supreme/Independent Truck', 'Classic Independent truck with custom Supreme art. Made exclusively for Supreme.', 'Skate', 60.00);
 
--- Insert some example colors
+
 INSERT INTO colors (color_name) VALUES
 ('Navy'), ('Camo'), ('Dusty Pink'), ('Off White'), ('Purple'), ('Blue Stripe'), ('Light Blue'),
 ('Ash Grey'), ('Light Olive'), ('Black'), ('Tan'), ('Medium Washed Indigo'), ('Woodland Camo'),
 ('Denim'), ('Cardinal'), ('Red'), ('Natural');
 
--- Insert some example sizes
+
 INSERT INTO sizes (size_name) VALUES
 ('XS'), ('S'), ('M'), ('L'), ('XL'), ('XXL'), ('One Size');
 
--- Insert product variants for all products
+
 INSERT INTO product_variants (product_id, color_id, size_id, sku, price, stock_quantity)
 VALUES
 	-- Supreme/Jordan Puffer Jacket
@@ -290,7 +288,7 @@ VALUES
 	-- Supreme/Independent Truck
 	(33, (SELECT color_id FROM colors WHERE color_name = 'Silver'), (SELECT size_id FROM sizes WHERE size_name = 'One Size'), 'SUP-IND-TRU-SIL-OS', 60.00, 13000);
 
--- Insert sample customers
+
 INSERT INTO customers (first_name, last_name, email, phone, address, created_at) VALUES
 	('Emma', 'Johnson', 'emma.johnson@email.com', '212-555-1234', '456 Fashion Ave, New York, NY 10018', '2023-09-15 10:30:00'),
 	('Liam', 'Williams', 'liam.williams@email.com', '310-555-5678', '789 Rodeo Dr, Beverly Hills, CA 90210', '2023-10-02 14:45:00'),
@@ -308,7 +306,7 @@ INSERT INTO customers (first_name, last_name, email, phone, address, created_at)
 	('Benjamin', 'Anderson', 'benjamin.anderson@email.com', '615-555-4567', '1212 Broadway, Nashville, TN 37203', '2024-03-30 10:55:00'),
 	('Amelia', 'Taylor', 'amelia.taylor@email.com', '504-555-8901', '1313 Bourbon St, New Orleans, LA 70116', '2024-04-12 13:20:00');
 
--- Insert sample orders
+
 INSERT INTO orders (order_id, order_date, total_amount, status) VALUES
 	(1, '2023-09-20 14:30:00', 566.00, 'Delivered'),
 	(2, '2023-10-05 11:15:00', 386.00, 'Shipped'),
@@ -328,36 +326,36 @@ INSERT INTO orders (order_id, order_date, total_amount, status) VALUES
 
 
 INSERT INTO order_items (order_id, variant_id, quantity, price) VALUES
-	(1, 1, 2, 368.00),  -- Supreme/Jordan Puffer Jacket
-	(1, 4, 3, 198.00),  -- Loose Fit Stripe Shirt
-	(2, 2, 1, 199.00),  -- Polartec Shearling Reversible Pullover
-	(2, 5, 1, 138.00),  -- Small Box Shirt
-	(2, 19, 1, 49.00),  -- Screw Ball S Logo New Era
-	(3, 7, 1, 268.00),  -- Cashmere Sweater
-	(3, 20, 7, 168.00), -- Washed Chino Twill Camp Cap
-	(4, 10, 5, 168.00), -- Supreme/Jordan Hooded Sweatshirt
-	(4, 21, 3, 158.00), -- Underline Mesh Back 5-Panel
-	(5, 13, 1, 178.00), -- Supreme/Jordan Tricot Track Pant
-	(5, 22, 3, 148.00), -- Classic Logo Crusher
-	(6, 3, 1, 368.00),  -- Washed Flight Satin N-3B Parka
-	(6, 23, 1, 58.00),  -- Backpack
-	(7, 8, 1, 148.00),  -- Supreme/Jordan Warm Up Jersey
-	(7, 24, 1, 60.00), -- Camera Bag
-	(8, 14, 2, 298.00), -- Washed Flight Satin Cargo Pant
-	(8, 25, 1, 48.00), -- Waist Bag
-	(9, 18, 1, 138.00), -- Supreme/Jordan Warm Up Short
-	(9, 26, 1, 88.00),  -- Duffel Bag
-	(10, 1, 1, 368.00), -- Supreme/Jordan Puffer Jacket
-	(10, 7, 1, 298.00), -- Cashmere Sweater
-	(11, 11, 1, 168.00), -- S Logo Zip Up Hooded Sweatshirt
-	(11, 27, 1, 238.00), -- Supreme/Jordan Basketball
-	(12, 15, 1, 158.00), -- S Logo Sweatpant
-	(12, 28, 1, 178.00), -- Replica Chopped Cheese Sandwich
-	(13, 6, 1, 138.00),  -- Plaid Flannel Shirt
-	(13, 9, 1, 348.00),  -- Embroidered Collar L/S Top
-	(14, 16, 1, 168.00), -- Cargo Pant
-	(14, 29, 1, 128.00), -- Supreme/dearcloud Blemish Patches
-	(15, 17, 1, 168.00), -- Baggy Jean
-	(15, 30, 1, 298.00), -- Supreme/Hanes Boxer Briefs (4 Pack)
-	(16, 12, 1, 158.00), -- Collegiate Sleeve Hooded Sweatshirt
-	(16, 31, 1, 228.00); -- Blood And Body Skateboard
+	(1, 1, 2, 368.00),  
+	(1, 4, 3, 198.00),  
+	(2, 2, 1, 199.00),  
+	(2, 5, 1, 138.00),  
+	(2, 19, 1, 49.00),  
+	(3, 7, 1, 268.00),  
+	(3, 20, 7, 168.00), 
+	(4, 10, 5, 168.00), 
+	(4, 21, 3, 158.00), 
+	(5, 13, 1, 178.00),
+	(5, 22, 3, 148.00),
+	(6, 3, 1, 368.00),
+	(6, 23, 1, 58.00),
+	(7, 8, 1, 148.00),
+	(7, 24, 1, 60.00),
+	(8, 14, 2, 298.00),
+	(8, 25, 1, 48.00),
+	(9, 18, 1, 138.00),
+	(9, 26, 1, 88.00),
+	(10, 1, 1, 368.00),
+	(10, 7, 1, 298.00),
+	(11, 11, 1, 168.00),
+	(11, 27, 1, 238.00),
+	(12, 15, 1, 158.00),
+	(12, 28, 1, 178.00),
+	(13, 6, 1, 138.00),
+	(13, 9, 1, 348.00),
+	(14, 16, 1, 168.00),
+	(14, 29, 1, 128.00),
+	(15, 17, 1, 168.00),
+	(15, 30, 1, 298.00),
+	(16, 12, 1, 158.00),
+	(16, 31, 1, 228.00);
